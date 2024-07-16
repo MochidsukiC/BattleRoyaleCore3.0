@@ -1,0 +1,4 @@
+name: BattleRoyaleCore3.0
+version: '${project.version}'
+main: jp.houlab.mochidsuki.battleroyalecore3.Main
+api-version: '1.21'
