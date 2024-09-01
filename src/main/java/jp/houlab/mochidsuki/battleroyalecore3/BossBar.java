@@ -1,10 +1,8 @@
 package jp.houlab.mochidsuki.battleroyalecore3;
 
-import org.bukkit.ChatColor;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 
@@ -28,9 +26,14 @@ public class BossBar {
         bossBar.setProgress(progress);
     }
 
-    static void showBossbar(){
+    static void showBossBar(){
         for(Player player : plugin.getServer().getOnlinePlayers()){
             bossBar.addPlayer(player);
+            bossBar.setVisible(true);
         }
+    }
+
+    static void hideBossBar(){
+        bossBar.setVisible(false);
     }
 }

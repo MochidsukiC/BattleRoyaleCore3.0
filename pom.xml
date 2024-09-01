@@ -78,6 +78,14 @@
           <id>Border</id>
           <url>https://maven.pkg.github.com/MochidsukiC/Border</url>
       </repository>
+      <repository>
+          <id>GameMap</id>
+          <url>https://maven.pkg.github.com/MochidsukiC/GameMap</url>
+      </repository>
+      <repository>
+          <id>ArmorShield</id>
+          <url>https://maven.pkg.github.com/MochidsukiC/ArmorShield</url>
+      </repository>
   </repositories>
 
   <dependencies>
@@ -105,5 +113,17 @@
           <version>1.0-SNAPSHOT</version>
           <scope>provided</scope>
       </dependency>
+      <dependency>
+          <groupId>jp.houlab.mochidsuki</groupId>
+          <artifactId>gamemap</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>jp.houlab.mochidsuki</groupId>
+          <artifactId>armorshield</artifactId>
+          <version>1.0-SNAPSHOT</version>
+          <scope>provided</scope>
+  </dependency>
   </dependencies>
 </project>

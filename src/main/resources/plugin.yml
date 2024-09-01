@@ -9,6 +9,12 @@ commands:
   brc:
     aliases: [battleroyalecore]
     description: BRC管理コマンド
-    permission: battleroyalecore30.command.brg
+    permission: battleroyalecore30.command.brc
+    permission-message: Permission denied
+    usage: gr reload
+  watchHealth:
+    aliases: [wh]
+    description: BRC管理コマンド
+    permission: battleroyalecore30.command.watchHealth
     permission-message: Permission denied
     usage: gr reload

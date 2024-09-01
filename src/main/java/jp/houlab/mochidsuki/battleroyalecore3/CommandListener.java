@@ -13,14 +13,20 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
+import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 
 public class CommandListener implements CommandExecutor {
+    static public HashMap<CommandSender, BukkitTask> HealthBarShowerTaskRegister = new HashMap<>();
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
         if (command.getName().equalsIgnoreCase("brc")) {
@@ -31,6 +37,9 @@ public class CommandListener implements CommandExecutor {
             if (args[0].equalsIgnoreCase("start")) {
                 GameMainController.startGame();
             }
+            if(args[0].equalsIgnoreCase("teams")) {
+                GameMainController.watchTeamCount();
+            }
             /*
             if(args[0].equalsIgnoreCase("glow")){
                 GlowAPI.setGlowing((Player)sender, GlowAPI.Color.WHITE , Bukkit.getOnlinePlayers());
@@ -38,9 +47,17 @@ public class CommandListener implements CommandExecutor {
             }
 
              */
-
-
         }
-        return false;
+        if(command.getName().equalsIgnoreCase("watchHealth")) {
+            if(args.length == 0) {
+                HealthBarShower.sendMessage((Player) sender);
+            } else if (args[0].equalsIgnoreCase("stop")) {
+                HealthBarShowerTaskRegister.get(sender).cancel();
+                HealthBarShowerTaskRegister.remove(sender);
+            }else{
+                HealthBarShowerTaskRegister.put(sender, new HealthBarShower((Player) sender).runTaskTimer(plugin,0L, Long.parseLong(args[0])));
+            }
+        }
+        return true;
     }
 }

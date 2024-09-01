@@ -36,6 +36,7 @@ public final class Main extends JavaPlugin {
         getLogger().info("Battle Royale 2 Pluginが目を覚ました！");
         getServer().getPluginManager().registerEvents(new Listener(), this);
         getCommand("brc").setExecutor(new CommandListener()); //brgame
+        getCommand("watchHealth").setExecutor(new CommandListener());
 
         plugin = this;
 
