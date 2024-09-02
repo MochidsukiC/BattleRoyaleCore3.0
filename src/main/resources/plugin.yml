@@ -4,6 +4,7 @@ main: jp.houlab.mochidsuki.battleroyalecore3.Main
 api-version: '1.20'
 
 softdepend: [ProtocolLib ]
+loadbefore: [Elytra_JetPacker, Border, GameMap, Knockdown, BattleInventory, Pin, ArmorShield, MochidsukiFPSItems]
 
 commands:
   brc:
