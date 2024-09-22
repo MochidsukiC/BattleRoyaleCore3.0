@@ -76,33 +76,6 @@ public class Listener implements org.bukkit.event.Listener {
     }
 
     /**
-     * エンチャント金リンゴの効果時間を弱体化させる
-     * @param event イベント
-     */
-    @EventHandler
-    public void PlayerItemConsumeEvent(PlayerItemConsumeEvent event){
-        if(event.getItem().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)){
-            event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.GLOWING,1200,0,false,true,true));
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    event.getPlayer().removePotionEffect(PotionEffectType.REGENERATION);
-                    event.getPlayer().removePotionEffect(PotionEffectType.ABSORPTION);
-                    event.getPlayer().removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                    event.getPlayer().removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-                    event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION,1200,1));
-                    event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.ABSORPTION,1200,3));
-                    event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,1200,0));
-                    event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE,1200,0));
-                }
-            });
-        }
-        if(event.getItem().getType().equals(Material.MILK_BUCKET)&&event.getPlayer().hasPotionEffect(PotionEffectType.LUCK)){
-            event.setCancelled(true);
-        }
-    }
-
-    /**
      * 試合中のログインを拒否する
      * @param event イベント
      */
