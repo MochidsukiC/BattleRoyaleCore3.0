@@ -1,5 +1,6 @@
 package jp.houlab.mochidsuki.battleroyalecore3;
 
+import jp.houlab.Mochidsuki.chestReborn.ChestControl;
 import jp.houlab.mochidsuki.border.BorderDamager;
 import jp.houlab.mochidsuki.border.BorderInfo;
 import jp.houlab.mochidsuki.border.BorderShrinkSystem;
@@ -10,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Team;
 
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +21,10 @@ import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 import static jp.houlab.mochidsuki.battleroyalecore3.V.*;
 
+/**
+ * ゲームの進行を司るクラス
+ * @author Mochidsuki
+ */
 public class GameMainController {
 
     static int time;
@@ -29,7 +33,9 @@ public class GameMainController {
     static int[] RingXs = new int[config.getInt("Ring.Times")+1];
     static int[] RingZs = new int[config.getInt("Ring.Times")+1];
 
-
+    /**
+     * ゲームを開始する
+     */
     public static void startGame(){
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
@@ -46,7 +52,7 @@ public class GameMainController {
 
 
         }
-        gameround = 1;
+        setGameround(1);
         List<String> strings = config.getStringList("Ring.LastCenter");
         String[] strings1 = strings.get(new Random().nextInt(strings.size())).split(" ");
         LastRingX = Integer.parseInt(strings1[0]);
@@ -100,37 +106,43 @@ public class GameMainController {
 
         plugin.getServer().getScoreboardManager().getMainScoreboard().getObjective("teams").getScore("system").setScore(10);
 
-        watchTeamCount();
+        watchTeamCount(0);
         BorderDamager.setPower(true);
         startRound();
     }
-    public static void startRound(){
 
+    /**
+     * ラウンドを開始する
+     */
+    public static void startRound(){
+        if(getGameround() == 3) {
+            ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.minecraft(config.getString("HighTierLootTable"))));
+        }
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
-            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.gameround);
+            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.getGameround());
             player.sendMessage("ボーダーの収縮待機を開始");
             player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK,1,0);
 
             BossBar.setBossBarColor(BarColor.GREEN);
         }
 
-        time = config.getInt("Ring."+gameround+".sTime");
+        time = config.getInt("Ring."+getGameround()+".sTime");
 
-        BorderInfo.setTargetPX(RingXs[gameround]+config.getInt("Ring." + (gameround+1) + ".Radius"));
-        BorderInfo.setTargetMX(RingXs[gameround]-config.getInt("Ring." + (gameround+1) + ".Radius"));
-        BorderInfo.setTargetPZ(RingZs[gameround]+config.getInt("Ring." + (gameround+1) + ".Radius"));
-        BorderInfo.setTargetMZ(RingZs[gameround]-config.getInt("Ring." + (gameround+1) + ".Radius"));
+        BorderInfo.setTargetPX(RingXs[getGameround()]+config.getInt("Ring." + (getGameround()+1) + ".Radius"));
+        BorderInfo.setTargetMX(RingXs[getGameround()]-config.getInt("Ring." + (getGameround()+1) + ".Radius"));
+        BorderInfo.setTargetPZ(RingZs[getGameround()]+config.getInt("Ring." + (getGameround()+1) + ".Radius"));
+        BorderInfo.setTargetMZ(RingZs[getGameround()]-config.getInt("Ring." + (getGameround()+1) + ".Radius"));
 
-        BorderDamager.setDamage((float) config.getDouble("Ring." + gameround + ".Damage"));
+        BorderDamager.setDamage((float) config.getDouble("Ring." + getGameround() + ".Damage"));
 
 
-        V.RoundTasks.add(
+        V.getRoundTasks().add(
             new BukkitRunnable(){
                 @Override
                 public void run() {
-                    BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.gameround + ChatColor.GREEN + " - ボーダー収縮待機中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + TeamCount);
-                    BossBar.setBossBarProgress(time/config.getDouble("Ring."+gameround+".sTime"));
+                    BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.getGameround() + ChatColor.GREEN + " - ボーダー収縮待機中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + getTeamCount());
+                    BossBar.setBossBarProgress(time/config.getDouble("Ring."+getGameround()+".sTime"));
                     BossBar.showBossBar();
 
                     time--;
@@ -143,10 +155,14 @@ public class GameMainController {
             }.runTaskTimer(plugin, 0,20)
         );
     }
+
+    /**
+     * ラウンドの収縮フェーズを開始する
+     */
     public static void startMoveRound(){
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
-            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.gameround);
+            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.getTeamCount());
             player.sendMessage("ボーダーの収縮を開始");
             player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK,1,0);
 
@@ -154,22 +170,22 @@ public class GameMainController {
             BossBar.setBossBarColor(BarColor.RED);
         }
 
-        time = config.getInt("Ring."+gameround+".vTime");
-        borderShrinkSystem = new BorderShrinkSystem(time*20,RingXs[gameround],RingZs[gameround],config.getInt("Ring." + (gameround + 1) + ".Radius")).runTaskTimer(jp.houlab.mochidsuki.border.Main.plugin,0,1);
-        V.RoundTasks.add(
+        time = config.getInt("Ring."+getTeamCount()+".vTime");
+        setBorderShrinkSystem(new BorderShrinkSystem(time*20,RingXs[getTeamCount()],RingZs[getTeamCount()],config.getInt("Ring." + (getTeamCount() + 1) + ".Radius")).runTaskTimer(jp.houlab.mochidsuki.border.Main.plugin,0,1));
+        V.getRoundTasks().add(
                 new BukkitRunnable(){
 
                     @Override
                     public void run() {
-                        BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.gameround + ChatColor.RED + " - ボーダー収縮中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + TeamCount);
-                        BossBar.setBossBarProgress(time/config.getDouble("Ring."+gameround+".vTime"));
+                        BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.getTeamCount() + ChatColor.RED + " - ボーダー収縮中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + getTeamCount());
+                        BossBar.setBossBarProgress(time/config.getDouble("Ring."+getTeamCount()+".vTime"));
                         BossBar.showBossBar();
 
                         time--;
 
                         if(time <= 0) {
-                            gameround++;
-                            if(gameround <= config.getInt("Ring.Times")) {
+                            setTeamCount(getTeamCount() + 1);
+                            if(getTeamCount() <= config.getInt("Ring.Times")) {
                                 startRound();
                             }
                             cancel();
@@ -179,31 +195,38 @@ public class GameMainController {
         );
     }
 
+    /**
+     * ゲームを終了する
+     */
     public static void endGame(){
         plugin.getServer().getScoreboardManager().getMainScoreboard().getObjective("teams").getScore("system").setScore(1);
-        for(BukkitTask task : V.RoundTasks){
+        for(BukkitTask task : V.getRoundTasks()){
             task.cancel();
         }
-        gameround = 0;
+        setGameround(0);
         BossBar.hideBossBar();
-        if(borderShrinkSystem != null) {
-            borderShrinkSystem.cancel();
+        if(getBorderShrinkSystem() != null) {
+            getBorderShrinkSystem().cancel();
         }
         BorderDamager.setPower(false);
     }
 
-    public static void watchTeamCount(){
-        Set<Team> teams = new HashSet<>();
+    /**
+     * チーム数を監視する
+     * @param i 誤差
+     */
+    public static void watchTeamCount(int i){
+        Set<String> teams = new HashSet<>();
         for(Player player : plugin.getServer().getOnlinePlayers()) {
             if(player.getGameMode() == GameMode.ADVENTURE || player.getGameMode() == GameMode.SURVIVAL) {
                 try {
-                    teams.add(player.getScoreboard().getEntityTeam(player));
+                    teams.add(player.getScoreboard().getEntityTeam(player).getName());
                 }catch(Exception e) {
                     e.printStackTrace();
                 }
             }
         }
-        V.TeamCount = teams.size();
+        V.setTeamCount(teams.size());
         if(teams.size() <= 1){
             GameMainController.endGame();
         }

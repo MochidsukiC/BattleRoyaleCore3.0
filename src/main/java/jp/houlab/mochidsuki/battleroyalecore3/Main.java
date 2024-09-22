@@ -25,12 +25,20 @@ import java.util.List;
 
 import static org.bukkit.Bukkit.*;
 
+/**
+ * メインクラス
+ */
 public final class Main extends JavaPlugin {
 
     public static Plugin plugin;
     public static FileConfiguration config;
 
     private ProtocolManager protocolManager;
+
+    /**
+     * 初期化処理
+     * 起動時に実行される
+     */
     @Override
     public void onEnable() {
         getLogger().info("Battle Royale 2 Pluginが目を覚ました！");
@@ -44,9 +52,6 @@ public final class Main extends JavaPlugin {
         saveDefaultConfig();
         config = getConfig();
 
-        //World
-        V.world = getWorld(config.getString("World"));
-
         //BossBar
         BossBar.createBossBar();
 
@@ -54,23 +59,12 @@ public final class Main extends JavaPlugin {
 
     }
 
+    /**
+     * 終了処理
+     */
     @Override
     public void onDisable() {
         getLogger().info("Battle Royale 2 Pluginがおねんねした");
         // Plugin shutdown logic
     }
-    public static Plugin getPlugin() {
-        return plugin;
-    }
-
-
-
-
-}
-
-class B{
-    static int[] target = new int[4];
-
-    static double[] center = new double[3];
-
 }

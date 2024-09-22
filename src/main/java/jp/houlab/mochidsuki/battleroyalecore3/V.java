@@ -1,26 +1,75 @@
 package jp.houlab.mochidsuki.battleroyalecore3;
 
-import jp.houlab.mochidsuki.border.BorderShrinkSystem;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class V {
+    static private int getGameround;
 
-    static int gameround;
+    static private int TeamCount;
 
-    static World world;
+    static private List<BukkitTask> RoundTasks = new ArrayList<BukkitTask>();
 
-    static int TeamCount;
+    static private BukkitTask borderShrinkSystem;
 
-    static List<BukkitTask> RoundTasks = new ArrayList<BukkitTask>();
+    /**
+     * ゲームラウンドを取得
+     * @return ラウンド数
+     */
+    public static int getGameround() {
+        return getGameround;
+    }
 
-    static BukkitTask borderShrinkSystem;
+    /**
+     * ラウンド数を設定
+     * @param getGameround ラウンド数
+     */
+    public static void setGameround(int getGameround) {
+        V.getGameround = getGameround;
+    }
+
+    /**
+     * 生存しているチーム数を取得
+     * @return チーム数
+     */
+    public static int getTeamCount() {
+        return TeamCount;
+    }
+
+    /**
+     * 生存しているチーム数を指定
+     * @param teamCount チーム数
+     */
+    public static void setTeamCount(int teamCount) {
+        TeamCount = teamCount;
+    }
+
+    /**
+     * ラウンドを管理しているタスクのリストを取得
+     * @return タスクのリスト
+     */
+    public static List<BukkitTask> getRoundTasks() {
+        return RoundTasks;
+    }
+
+    /**
+     * ボーダーの収縮を行うタスクを取得
+     * @return ボーダーの収縮を行うタスク
+     */
+    public static BukkitTask getBorderShrinkSystem() {
+        return borderShrinkSystem;
+    }
+
+    /**
+     * ボーダーの収縮を行うタスクを設定
+     * @param borderShrinkSystem　ボーダーの収縮を行うタスク
+     */
+    public static void setBorderShrinkSystem(BukkitTask borderShrinkSystem) {
+        V.borderShrinkSystem = borderShrinkSystem;
+    }
+
+
 }

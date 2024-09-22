@@ -15,17 +15,33 @@ import java.util.Collections;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 
+/**
+ * 生存しているプレイヤーの体力リストをチャットに送信する
+ * @author Mochidsuki
+ */
 public class HealthBarShower extends BukkitRunnable {
     private final Player player;
+
+    /**
+     * コンストラクタ
+     * @param player 送信するプレイヤー
+     */
     public HealthBarShower(Player player) {
         this.player = player;
     }
 
+    /**
+     * 実行メソッド
+     */
     @Override
     public void run() {
         sendMessage(player);
     }
 
+    /**
+     * メッセージを送信する
+     * @param player 送信するプレイヤー
+     */
     static public void sendMessage(Player player) {
         int i = 0;
         TextComponent[] textComponents = new TextComponent[10];

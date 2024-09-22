@@ -24,6 +24,10 @@ import java.util.Objects;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 
+/**
+ * コマンドリスナー
+ * @author Mochidsuki
+ */
 public class CommandListener implements CommandExecutor {
     static public HashMap<CommandSender, BukkitTask> HealthBarShowerTaskRegister = new HashMap<>();
 
@@ -38,7 +42,7 @@ public class CommandListener implements CommandExecutor {
                 GameMainController.startGame();
             }
             if(args[0].equalsIgnoreCase("teams")) {
-                GameMainController.watchTeamCount();
+                GameMainController.watchTeamCount(0);
             }
             /*
             if(args[0].equalsIgnoreCase("glow")){

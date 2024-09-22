@@ -34,9 +34,16 @@ import java.util.Set;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 
+/**
+ * イベントリスナー
+ * @author Mochidsuki
+ */
 public class Listener implements org.bukkit.event.Listener {
 
-
+    /**
+     *ブロックが破壊できないようにする
+     * @param event イベント
+     */
     @EventHandler
     public void BlockBreakEvent(BlockBreakEvent event){
         Block block = event.getBlock();
@@ -47,16 +54,31 @@ public class Listener implements org.bukkit.event.Listener {
         }
 
     }
+
+    /**
+     * ノックダウン時にアイテムを拾えないようにする
+     * @param event イベント
+     */
     @EventHandler
     public void EntityPickupItemEvent(EntityPickupItemEvent event){
         if(event.getEntity().hasPotionEffect(PotionEffectType.UNLUCK)){
             event.setCancelled(true);
         }
     }
+
+    /**
+     * ポーション効果を受けたときインベントリを更新する
+     * @param event イベント
+     */
     @EventHandler
     public void EntityPotionEffectEvent(EntityPotionEffectEvent event){
         ((Player)event.getEntity()).updateInventory();
     }
+
+    /**
+     * エンチャント金リンゴの効果時間を弱体化させる
+     * @param event イベント
+     */
     @EventHandler
     public void PlayerItemConsumeEvent(PlayerItemConsumeEvent event){
         if(event.getItem().getType().equals(Material.ENCHANTED_GOLDEN_APPLE)){
@@ -79,16 +101,24 @@ public class Listener implements org.bukkit.event.Listener {
             event.setCancelled(true);
         }
     }
+
+    /**
+     * 試合中のログインを拒否する
+     * @param event イベント
+     */
     @EventHandler
     public void PlayerLoginEvent(PlayerLoginEvent event){
         event.setResult(PlayerLoginEvent.Result.ALLOWED);
-        if(V.gameround != 0 && !event.getPlayer().isOp()) {
+        if(V.getGameround() != 0 && !event.getPlayer().isOp()) {
             event.setKickMessage("試合中であるため入室できません");
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         }
     }
 
-
+    /**
+     * ダメージを経験値に変換し攻撃者に与える
+     * @param event イベント
+     */
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
         if(event.getEntity().getType() == EntityType.PLAYER && (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW)){
@@ -96,7 +126,7 @@ public class Listener implements org.bukkit.event.Listener {
             if(event.getDamager() instanceof Player) {
                 damager = (Player) event.getDamager();
             }else if(event.getDamager() instanceof Arrow) {
-                damager = (Player) ((Arrow) event.getEntity()).getShooter();
+                damager = (Player) ((Arrow) event.getDamager()).getShooter();
             }
             Player player = (Player) event.getEntity();
 
@@ -104,7 +134,11 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
-    //Door Lock
+    /**
+     * ドアロックする
+     * @param event イベント
+     * しゃがんでいるプレイヤーがドアの前にいるときドアが操作できなくなる
+     */
     @EventHandler
     public void PlayerInteractEvent(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -162,8 +196,12 @@ public class Listener implements org.bukkit.event.Listener {
         }
     }
 
+    /**
+     * プレイヤーが死んだら部隊数を確認する
+     * @param event イベント
+     */
     @EventHandler
     public void PlayerDeathEvent(PlayerDeathEvent event) {
-        GameMainController.watchTeamCount();
+        GameMainController.watchTeamCount(1);
     }
 }

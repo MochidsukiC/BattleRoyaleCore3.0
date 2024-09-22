@@ -1,9 +1,10 @@
+#マップの中心地点と半径を指定
 MAP:
   Center:
     x: 0
     z: 0
   Radius: 1000
-#変性ボーダーの待機時間(sTime)と収縮時間(vTime)の指定。(秒)
+#変性ボーダーの待機時間(sTime)と収縮時間(vTime)とラウンド終了時の半径(Radius)と範囲外ダメージの指定。(秒)
 Ring:
   1:
     sTime: 90
@@ -36,7 +37,7 @@ Ring:
     Radius: 20
     Damage: 2.9
   Times: 6
-  #x,z
+  #最終ボーダーの位置を(x z)の書式で指定
   LastCenter:
     - 254 -287
     - 431 43
@@ -70,5 +71,7 @@ Ring:
     - -397 221
     - -224 57
     - -301 272
-
+#実行するワールドを指定
 World: world
+#ハイティアのルートテーブルを指定
+HighTierLootTable: ver10
