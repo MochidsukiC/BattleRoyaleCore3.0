@@ -25,6 +25,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
 
 import java.util.Objects;
@@ -175,6 +176,10 @@ public class Listener implements org.bukkit.event.Listener {
      */
     @EventHandler
     public void PlayerDeathEvent(PlayerDeathEvent event) {
-        GameMainController.watchTeamCount(1);
+        new BukkitRunnable() {
+            public void run() {
+                GameMainController.watchTeamCount(1);
+            }
+        }.runTaskLater(plugin,10);
     }
 }

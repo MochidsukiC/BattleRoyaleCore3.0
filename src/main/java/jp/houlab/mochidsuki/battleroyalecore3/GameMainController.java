@@ -216,7 +216,7 @@ public class GameMainController {
      * @param i 誤差
      */
     public static void watchTeamCount(int i){
-        Set<String> teams = new HashSet<>();
+        HashSet<String> teams = new HashSet<>();
         for(Player player : plugin.getServer().getOnlinePlayers()) {
             if(player.getGameMode() == GameMode.ADVENTURE || player.getGameMode() == GameMode.SURVIVAL) {
                 try {
