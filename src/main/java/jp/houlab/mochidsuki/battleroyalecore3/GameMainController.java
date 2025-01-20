@@ -4,6 +4,7 @@ import jp.houlab.Mochidsuki.chestReborn.ChestControl;
 import jp.houlab.mochidsuki.border.BorderDamager;
 import jp.houlab.mochidsuki.border.BorderInfo;
 import jp.houlab.mochidsuki.border.BorderShrinkSystem;
+import jp.houlab.mochidsuki.knockdown.scoreCounterAPI.ScoreProfile;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
@@ -209,6 +210,22 @@ public class GameMainController {
             getBorderShrinkSystem().cancel();
         }
         BorderDamager.setPower(false);
+
+        //スコア送信システム
+        new BukkitRunnable(){
+
+            @Override
+            public void run() {
+                for (Player player : plugin.getServer().getOnlinePlayers()) {
+                    player.sendMessage("戦績====================");
+                    player.sendMessage("キル数　　 : "+ ScoreProfile.scoreProfiles.get(player).getKillScore());
+                    player.sendMessage("アシスト数 : "+ ScoreProfile.scoreProfiles.get(player).getAssistScore());
+                    player.sendMessage("ダメージ数 : "+ ScoreProfile.scoreProfiles.get(player).getDamageScore());
+                    player.sendMessage("デス数　　 : "+ ScoreProfile.scoreProfiles.get(player).getDeathScore());
+                    player.sendMessage("=======================");
+                }
+            }
+        }.runTaskTimer(plugin, 0,20);
     }
 
     /**
