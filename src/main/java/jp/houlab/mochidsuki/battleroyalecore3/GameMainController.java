@@ -165,7 +165,7 @@ public class GameMainController {
     private static void startMoveRound(){
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
-            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.getTeamCount());
+            player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.getGameround());
             player.sendMessage("ボーダーの収縮を開始");
             player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK,1,0);
 
@@ -174,22 +174,23 @@ public class GameMainController {
 
         BossBar.setBossBarColor(BarColor.RED);
 
-        time = config.getInt("Ring."+getTeamCount()+".vTime");
-        setBorderShrinkSystem(new BorderShrinkSystem(time*20,RingXs[getTeamCount()],RingZs[getTeamCount()],config.getInt("Ring." + (getTeamCount() + 1) + ".Radius")).runTaskTimer(jp.houlab.mochidsuki.border.Main.plugin,0,1));
+        time = config.getInt("Ring."+getGameround()+".vTime");
+        setBorderShrinkSystem(new BorderShrinkSystem(time*20,RingXs[getGameround()],RingZs[getGameround()],config.getInt("Ring." + (getGameround() + 1) + ".Radius")).runTaskTimer(jp.houlab.mochidsuki.border.Main.plugin,0,1));
         V.getRoundTasks().add(
                 new BukkitRunnable(){
 
                     @Override
                     public void run() {
-                        BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.getTeamCount() + ChatColor.RED + " - ボーダー収縮中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + getTeamCount());
-                        BossBar.setBossBarProgress(time/config.getDouble("Ring."+getTeamCount()+".vTime"));
+                        BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.getGameround() + ChatColor.RED + " - ボーダー収縮中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + getTeamCount());
+                        BossBar.setBossBarProgress(time/config.getDouble("Ring."+getGameround()+".vTime"));
                         BossBar.showBossBar();
 
                         time--;
 
                         if(time <= 0) {
-                            setTeamCount(getTeamCount() + 1);
-                            if(getTeamCount() <= config.getInt("Ring.Times")) {
+                            V.setGameround(V.getGameround()+1);
+                            if(getGameround() <= config.getInt("Ring.Times")) {
+
                                 startRound();
                             }
                             cancel();

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class V {
-    static private int getGameround;
+    static private int gameRound;
 
     static private int TeamCount;
 
@@ -20,15 +20,15 @@ public class V {
      * @return ラウンド数
      */
     public static int getGameround() {
-        return getGameround;
+        return gameRound;
     }
 
     /**
      * ラウンド数を設定
-     * @param getGameround ラウンド数
+     * @param gameRound ラウンド数
      */
-    public static void setGameround(int getGameround) {
-        V.getGameround = getGameround;
+    protected static void setGameround(int gameRound) {
+        V.gameRound = gameRound;
     }
 
     /**
