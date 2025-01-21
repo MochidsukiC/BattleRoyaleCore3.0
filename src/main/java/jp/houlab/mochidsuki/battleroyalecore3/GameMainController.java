@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.scoreboard.Score;
 
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +38,7 @@ public class GameMainController {
     /**
      * ゲームを開始する
      */
-    public static void startGame(){
+    protected static void startGame(){
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
 
@@ -51,6 +52,7 @@ public class GameMainController {
             player.getInventory().setItem(23,new ItemStack(Material.LEATHER_CHESTPLATE));
             player.getInventory().setItem(24,new ItemStack(Material.LEATHER_BOOTS));
 
+            ScoreProfile.scoreProfiles.get(player).reset();
 
         }
         setGameround(1);
@@ -115,7 +117,7 @@ public class GameMainController {
     /**
      * ラウンドを開始する
      */
-    public static void startRound(){
+    private static void startRound(){
         if(getGameround() == 3) {
             ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.minecraft(config.getString("HighTierLootTable"))));
         }
@@ -160,7 +162,7 @@ public class GameMainController {
     /**
      * ラウンドの収縮フェーズを開始する
      */
-    public static void startMoveRound(){
+    private static void startMoveRound(){
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
             player.sendMessage(ChatColor.YELLOW + "" + ChatColor.BOLD + "ラウンド" + V.getTeamCount());
@@ -168,8 +170,9 @@ public class GameMainController {
             player.playSound(player, Sound.BLOCK_AMETHYST_BLOCK_BREAK,1,0);
 
 
-            BossBar.setBossBarColor(BarColor.RED);
         }
+
+        BossBar.setBossBarColor(BarColor.RED);
 
         time = config.getInt("Ring."+getTeamCount()+".vTime");
         setBorderShrinkSystem(new BorderShrinkSystem(time*20,RingXs[getTeamCount()],RingZs[getTeamCount()],config.getInt("Ring." + (getTeamCount() + 1) + ".Radius")).runTaskTimer(jp.houlab.mochidsuki.border.Main.plugin,0,1));
@@ -217,15 +220,21 @@ public class GameMainController {
             @Override
             public void run() {
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
+                    int rank = ScoreProfile.scoreProfiles.get(player).getRankScore();
+                    if(rank == 0){
+                        rank = 1;
+                    }
+
                     player.sendMessage("戦績====================");
+                    player.sendMessage("順位　　　 : "+ rank);
                     player.sendMessage("キル数　　 : "+ ScoreProfile.scoreProfiles.get(player).getKillScore());
                     player.sendMessage("アシスト数 : "+ ScoreProfile.scoreProfiles.get(player).getAssistScore());
-                    player.sendMessage("ダメージ数 : "+ ScoreProfile.scoreProfiles.get(player).getDamageScore());
+                    player.sendMessage("ダメージ数 : "+ (int)ScoreProfile.scoreProfiles.get(player).getDamageScore());
                     player.sendMessage("デス数　　 : "+ ScoreProfile.scoreProfiles.get(player).getDeathScore());
                     player.sendMessage("=======================");
                 }
             }
-        }.runTaskTimer(plugin, 0,20);
+        }.runTaskLater(plugin, 20);
     }
 
     /**
