@@ -74,4 +74,4 @@ Ring:
 #実行するワールドを指定
 World: world
 #ハイティアのルートテーブルを指定
-HighTierLootTable: ver10
+HighTierLootTable: battleroyale2:chest/ver10

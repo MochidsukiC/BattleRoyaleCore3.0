@@ -119,7 +119,7 @@ public class GameMainController {
      */
     private static void startRound(){
         if(getGameround() == 3) {
-            ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.minecraft(config.getString("HighTierLootTable"))));
+            ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.fromString(config.getString("HighTierLootTable"))));
         }
 
         for(Player player : plugin.getServer().getOnlinePlayers()){
