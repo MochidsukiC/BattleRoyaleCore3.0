@@ -4,6 +4,7 @@ import jp.houlab.Mochidsuki.chestReborn.ChestControl;
 import jp.houlab.mochidsuki.border.BorderDamager;
 import jp.houlab.mochidsuki.border.BorderInfo;
 import jp.houlab.mochidsuki.border.BorderShrinkSystem;
+import jp.houlab.mochidsuki.carePackage.CarePackage;
 import jp.houlab.mochidsuki.knockdown.scoreCounterAPI.ScoreProfile;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
@@ -22,6 +23,7 @@ import java.util.Set;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
 import static jp.houlab.mochidsuki.battleroyalecore3.V.*;
+import static jp.houlab.mochidsuki.border.Main.world;
 
 /**
  * ゲームの進行を司るクラス
@@ -118,8 +120,27 @@ public class GameMainController {
      * ラウンドを開始する
      */
     private static void startRound(){
-        if(getGameround() == 3) {
-            ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.fromString(config.getString("HighTierLootTable"))));
+        switch (getGameround()){
+            case 2:{
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                break;
+            }
+            case 3:{
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+
+                ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.fromString(config.getString("HighTierLootTable"))));
+                break;
+            }
+            case 4:{
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                break;
+            }
         }
 
         for(Player player : plugin.getServer().getOnlinePlayers()){

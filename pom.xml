@@ -94,6 +94,10 @@
           <id>Knockdown</id>
           <url>https://maven.pkg.github.com/MochidsukiC/Knockdown</url>
       </repository>
+      <repository>
+          <id>CarePackage</id>
+          <url>https://maven.pkg.github.com/MochidsukiC/CarePackage</url>
+      </repository>
   </repositories>
 
   <dependencies>
@@ -138,6 +142,11 @@
           <artifactId>knockdown</artifactId>
           <version>1.0-SNAPSHOT</version>
           <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>jp.houlab.mochidsuki</groupId>
+          <artifactId>carepackage</artifactId>
+          <version>1.0-SNAPSHOT</version>
       </dependency>
   </dependencies>
 </project>
