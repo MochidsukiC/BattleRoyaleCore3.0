@@ -122,23 +122,43 @@ public class GameMainController {
     private static void startRound(){
         switch (getGameround()){
             case 2:{
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                try {
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
+                    for(Player player :plugin.getServer().getOnlinePlayers()){
+                        player.sendMessage("ケアパッケージ投下!!");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             }
             case 3:{
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-
+                try {
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    for(Player player :plugin.getServer().getOnlinePlayers()){
+                        player.sendMessage("ケアパッケージ投下!!");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 ChestControl.replaceAllWithTable(plugin.getServer().getLootTable(NamespacedKey.fromString(config.getString("HighTierLootTable"))));
                 break;
             }
             case 4:{
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                try {
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    for(Player player :plugin.getServer().getOnlinePlayers()){
+                        player.sendMessage("ケアパッケージ投下!!");
+                    }
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 break;
             }
         }
@@ -202,11 +222,6 @@ public class GameMainController {
 
                     @Override
                     public void run() {
-                        BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.getGameround() + ChatColor.RED + " - ボーダー収縮中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + getTeamCount());
-                        BossBar.setBossBarProgress(time/config.getDouble("Ring."+getGameround()+".vTime"));
-                        BossBar.showBossBar();
-
-                        time--;
 
                         if(time <= 0) {
                             V.setGameround(V.getGameround()+1);
@@ -216,6 +231,13 @@ public class GameMainController {
                             }
                             cancel();
                         }
+
+                        BossBar.setBossBarTitle(ChatColor.YELLOW + "ラウンド" + V.getGameround() + ChatColor.RED + " - ボーダー収縮中・・・" + ChatColor.AQUA + (time - time % 60) / 60 + ":" + time % 60 + ChatColor.GRAY + " - 残り部隊数 :" + getTeamCount());
+                        BossBar.setBossBarProgress(time/config.getDouble("Ring."+getGameround()+".vTime"));
+                        BossBar.showBossBar();
+
+                        time--;
+
                     }
                 }.runTaskTimer(plugin, 0,20)
         );

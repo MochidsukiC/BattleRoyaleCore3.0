@@ -147,6 +147,7 @@
           <groupId>jp.houlab.mochidsuki</groupId>
           <artifactId>carepackage</artifactId>
           <version>1.0-SNAPSHOT</version>
+          <scope>provided</scope>
       </dependency>
   </dependencies>
 </project>

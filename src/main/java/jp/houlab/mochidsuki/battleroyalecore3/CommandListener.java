@@ -1,6 +1,7 @@
 package jp.houlab.mochidsuki.battleroyalecore3;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -23,6 +24,8 @@ import java.util.Objects;
 
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
+import static jp.houlab.mochidsuki.battleroyalecore3.V.getGameround;
+import static jp.houlab.mochidsuki.border.Main.world;
 
 /**
  * コマンドリスナー
@@ -43,6 +46,9 @@ public class CommandListener implements CommandExecutor {
             }
             if(args[0].equalsIgnoreCase("teams")) {
                 GameMainController.watchTeamCount(0);
+            }
+            if(args[0].equalsIgnoreCase("debug")) {
+                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, GameMainController.RingXs[getGameround()], 300, GameMainController.RingZs[getGameround()]), 2);
             }
             /*
             if(args[0].equalsIgnoreCase("glow")){
