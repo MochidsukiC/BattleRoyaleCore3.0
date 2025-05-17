@@ -48,7 +48,8 @@ public class CommandListener implements CommandExecutor {
                 GameMainController.watchTeamCount(0);
             }
             if(args[0].equalsIgnoreCase("debug")) {
-                jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, GameMainController.RingXs[getGameround()], 300, GameMainController.RingZs[getGameround()]), 2);
+                GameMainController.setDebug(true);
+                GameMainController.startGame();
             }
             /*
             if(args[0].equalsIgnoreCase("glow")){

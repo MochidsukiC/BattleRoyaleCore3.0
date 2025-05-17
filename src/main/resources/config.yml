@@ -4,6 +4,7 @@ MAP:
     x: 0
     z: 0
   Radius: 1000
+  Height: 0
 #変性ボーダーの待機時間(sTime)と収縮時間(vTime)とラウンド終了時の半径(Radius)と範囲外ダメージの指定。(秒)
 Ring:
   1:
