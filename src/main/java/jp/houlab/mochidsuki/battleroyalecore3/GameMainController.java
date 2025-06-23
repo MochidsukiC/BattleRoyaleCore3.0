@@ -107,7 +107,7 @@ public class GameMainController {
         RingXs[config.getInt("Ring.Times")] = LastRingX;
         RingZs[config.getInt("Ring.Times")] = LastRingZ;
 
-        BorderShrinkSystem.Initializer(config.getInt("MAP.Center.x"),config.getInt("MAP.Center.z"),config.getInt("MAP.Radius")/2);
+        BorderShrinkSystem.Initializer(config.getInt("MAP.Center.x"),config.getInt("MAP.Center.z"),config.getInt("MAP.Radius")/2,-70);
 
         plugin.getServer().getScoreboardManager().getMainScoreboard().getObjective("teams").getScore("system").setScore(10);
 
@@ -123,10 +123,10 @@ public class GameMainController {
         switch (getGameround()){
             case 2:{
                 try {
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() - 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() + 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() + 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() + 1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(2, new Location(world, RingXs[getGameround()], 300, RingZs[getGameround()]), config.getInt("Ring." + (getGameround() + 1) + ".Radius"));
                     for(Player player :plugin.getServer().getOnlinePlayers()){
                         player.sendMessage("ケアパッケージ投下!!");
                     }
@@ -137,9 +137,9 @@ public class GameMainController {
             }
             case 3:{
                 try {
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()+1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()+1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(3,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()+1) + ".Radius"));
                     for(Player player :plugin.getServer().getOnlinePlayers()){
                         player.sendMessage("ケアパッケージ投下!!");
                     }
@@ -151,8 +151,8 @@ public class GameMainController {
             }
             case 4:{
                 try {
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
-                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()-1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()+1) + ".Radius"));
+                    jp.houlab.mochidsuki.carePackage.SpawnPackage.randomSpawn(4,new Location(world,RingXs[getGameround()],300,RingZs[getGameround()]),config.getInt("Ring." + (getGameround()+1) + ".Radius"));
                     for(Player player :plugin.getServer().getOnlinePlayers()){
                         player.sendMessage("ケアパッケージ投下!!");
                     }
