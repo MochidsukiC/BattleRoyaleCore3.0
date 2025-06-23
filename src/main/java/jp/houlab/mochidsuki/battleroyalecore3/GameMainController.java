@@ -37,6 +37,12 @@ public class GameMainController {
     static int[] RingXs = new int[config.getInt("Ring.Times")+1];
     static int[] RingZs = new int[config.getInt("Ring.Times")+1];
 
+    public static void setDebug(boolean debug) {
+        GameMainController.debug = debug;
+    }
+
+    static private boolean debug = false;
+
     /**
      * ゲームを開始する
      */
@@ -107,7 +113,7 @@ public class GameMainController {
         RingXs[config.getInt("Ring.Times")] = LastRingX;
         RingZs[config.getInt("Ring.Times")] = LastRingZ;
 
-        BorderShrinkSystem.Initializer(config.getInt("MAP.Center.x"),config.getInt("MAP.Center.z"),config.getInt("MAP.Radius")/2,-70);
+        BorderShrinkSystem.Initializer(config.getInt("MAP.Center.x"),config.getInt("MAP.Center.z"),config.getInt("MAP.Radius")/2,config.getInt("MAP.Height"));
 
         plugin.getServer().getScoreboardManager().getMainScoreboard().getObjective("teams").getScore("system").setScore(10);
 
@@ -297,7 +303,7 @@ public class GameMainController {
             }
         }
         V.setTeamCount(teams.size());
-        if(teams.size() <= 1){
+        if(teams.size() <= 1 && !debug){
             GameMainController.endGame();
         }
     }
