@@ -73,7 +73,9 @@ public class Listener implements org.bukkit.event.Listener {
      */
     @EventHandler
     public void EntityPotionEffectEvent(EntityPotionEffectEvent event){
-        ((Player)event.getEntity()).updateInventory();
+        if(event.getEntity().getType() == EntityType.PLAYER) {
+            ((Player) event.getEntity()).updateInventory();
+        }
     }
 
     /**
