@@ -1,18 +1,17 @@
 package jp.houlab.mochidsuki.battleroyalecore3;
 
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockSupport;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Fireball;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.EntityPotionEffectEvent;
@@ -34,6 +33,7 @@ import java.util.Set;
 
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.config;
 import static jp.houlab.mochidsuki.battleroyalecore3.Main.plugin;
+import static jp.houlab.mochidsuki.battleroyalecore3.V.getGameround;
 
 /**
  * イベントリスナー
@@ -54,6 +54,17 @@ public class Listener implements org.bukkit.event.Listener {
             }
         }
 
+    }
+
+    @EventHandler
+    public void BlockPlaceEvent(BlockPlaceEvent event){
+        if(event.getBlockPlaced().getType().equals(Material.FIRE)){
+            return;
+        }
+
+        if(!event.getPlayer().isOp()){
+            event.setCancelled(true);
+        }
     }
 
     /**
@@ -85,7 +96,7 @@ public class Listener implements org.bukkit.event.Listener {
     @EventHandler
     public void PlayerLoginEvent(PlayerLoginEvent event){
         event.setResult(PlayerLoginEvent.Result.ALLOWED);
-        if(V.getGameround() != 0 && !event.getPlayer().isOp()) {
+        if(getGameround() != 0 && !event.getPlayer().isOp()) {
             event.setKickMessage("試合中であるため入室できません");
             event.setResult(PlayerLoginEvent.Result.KICK_OTHER);
         }
@@ -97,16 +108,38 @@ public class Listener implements org.bukkit.event.Listener {
      */
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        if(event.getEntity().getType() == EntityType.PLAYER && (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW)){
+        if(event.getEntity().getType() == EntityType.PLAYER && (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW || event.getDamager().getType() == EntityType.FIREBALL)){
             Player damager = null;
-            if(event.getDamager() instanceof Player) {
-                damager = (Player) event.getDamager();
-            }else if(event.getDamager() instanceof Arrow) {
-                damager = (Player) ((Arrow) event.getDamager()).getShooter();
+            switch (event.getDamager().getType()){
+                case PLAYER:{
+                    damager = (Player) event.getDamager();
+                    break;
+                }
+                case ARROW:{
+                    if(((Arrow) event.getDamager()).getShooter() instanceof Player) {
+                        damager = (Player) ((Arrow) event.getDamager()).getShooter();
+                    }
+                    break;
+                }
+                case FIREBALL:{
+                    if(((Fireball) event.getDamager()).getShooter() instanceof Player) {
+                        damager = (Player) ((Fireball) event.getDamager()).getShooter();
+                    }
+                }
             }
-            Player player = (Player) event.getEntity();
 
-            damager.setLevel((int) event.getDamage() + damager.getLevel());
+
+
+            Player player = (Player) event.getEntity();
+            if(damager != null && !damager.getUniqueId().equals(player.getUniqueId())) {
+                if ((damager.getLevel() < 10 && event.getDamage() >= 10 - damager.getLevel()) || (damager.getLevel() < 30 && event.getDamage() >= 30 - damager.getLevel()) || (damager.getLevel() < 70 && event.getDamage() >= 70 - damager.getLevel()) || (damager.getLevel() < 140 && event.getDamage() >= 140 - damager.getLevel())) {
+                    damager.playSound(damager.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, SoundCategory.MASTER, 1, 1);
+                }
+
+                damager.setLevel((int) event.getDamage() + damager.getLevel());
+            }
+
+
         }
     }
 

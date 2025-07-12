@@ -6,6 +6,7 @@ import jp.houlab.mochidsuki.border.BorderInfo;
 import jp.houlab.mochidsuki.border.BorderShrinkSystem;
 import jp.houlab.mochidsuki.carePackage.CarePackage;
 import jp.houlab.mochidsuki.knockdown.scoreCounterAPI.ScoreProfile;
+import jp.houlab.mochidsuki.knockdown.scoreCounterAPI.VictimProfile;
 import org.bukkit.*;
 import org.bukkit.boss.BarColor;
 import org.bukkit.entity.Player;
@@ -60,8 +61,8 @@ public class GameMainController {
             player.getInventory().setItem(23,new ItemStack(Material.LEATHER_CHESTPLATE));
             player.getInventory().setItem(24,new ItemStack(Material.LEATHER_BOOTS));
 
-            ScoreProfile.scoreProfiles.get(player).reset();
-
+            ScoreProfile.scoreProfiles.get(player.getUniqueId()).reset();
+            VictimProfile.victimProfiles.get(player.getUniqueId()).reset();
         }
         setGameround(1);
         List<String> strings = config.getStringList("Ring.LastCenter");
@@ -277,18 +278,7 @@ public class GameMainController {
             @Override
             public void run() {
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
-                    int rank = ScoreProfile.scoreProfiles.get(player).getRankScore();
-                    if(rank == 0){
-                        rank = 1;
-                    }
-
-                    player.sendMessage("戦績====================");
-                    player.sendMessage("順位　　　 : "+ rank);
-                    player.sendMessage("キル数　　 : "+ ScoreProfile.scoreProfiles.get(player).getKillScore());
-                    player.sendMessage("アシスト数 : "+ ScoreProfile.scoreProfiles.get(player).getAssistScore());
-                    player.sendMessage("ダメージ数 : "+ (int)ScoreProfile.scoreProfiles.get(player).getDamageScore());
-                    player.sendMessage("デス数　　 : "+ ScoreProfile.scoreProfiles.get(player).getDeathScore());
-                    player.sendMessage("=======================");
+                    ScoreProfile.scoreProfiles.get(player.getUniqueId()).sendScore(player);
                 }
             }
         }.runTaskLater(plugin, 20);
