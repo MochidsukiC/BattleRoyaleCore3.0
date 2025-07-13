@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Team;
+import org.bukkit.util.RayTraceResult;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -105,6 +106,19 @@ public class Listener implements org.bukkit.event.Listener {
      */
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
+        if(event.getEntity().getType() == EntityType.PLAYER) {
+            Player player = (Player) event.getEntity();
+            if(event.getDamager().getType().equals(EntityType.ARROW) || event.getDamager().getType().equals(EntityType.SPECTRAL_ARROW)|| event.getDamager().getType().equals(EntityType.TRIDENT)) {
+                RayTraceResult result = player.getWorld().rayTraceBlocks(player.getLocation(),event.getDamager().getLocation().toVector().subtract(player.getLocation().toVector()),2,FluidCollisionMode.NEVER,true);
+                if(result != null && result.getHitBlock() != null) {
+                    event.setCancelled(true);
+                    event.setDamage(0);
+                    return;
+                }
+            }
+        }
+
+
         if(event.getEntity().getType() == EntityType.PLAYER && (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW || event.getDamager().getType() == EntityType.FIREBALL || event.getDamager().getType() == EntityType.SPECTRAL_ARROW || event.getDamager().getType() == EntityType.TRIDENT)){
             Player damager = null;
             switch (event.getDamager().getType()){
