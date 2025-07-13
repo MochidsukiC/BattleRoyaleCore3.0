@@ -280,6 +280,7 @@ public class GameMainController {
                 for (Player player : plugin.getServer().getOnlinePlayers()) {
                     ScoreProfile.scoreProfiles.get(player.getUniqueId()).sendScore(player);
                 }
+                ScoreProfile.outputScoreCsv();
             }
         }.runTaskLater(plugin, 20);
     }

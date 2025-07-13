@@ -4,10 +4,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockSupport;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Fireball;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -108,7 +105,7 @@ public class Listener implements org.bukkit.event.Listener {
      */
     @EventHandler
     public void EntityDamageByEntityEvent(EntityDamageByEntityEvent event) {
-        if(event.getEntity().getType() == EntityType.PLAYER && (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW || event.getDamager().getType() == EntityType.FIREBALL)){
+        if(event.getEntity().getType() == EntityType.PLAYER && (event.getDamager().getType() == EntityType.PLAYER || event.getDamager().getType() == EntityType.ARROW || event.getDamager().getType() == EntityType.FIREBALL || event.getDamager().getType() == EntityType.SPECTRAL_ARROW || event.getDamager().getType() == EntityType.TRIDENT)){
             Player damager = null;
             switch (event.getDamager().getType()){
                 case PLAYER:{
@@ -125,6 +122,19 @@ public class Listener implements org.bukkit.event.Listener {
                     if(((Fireball) event.getDamager()).getShooter() instanceof Player) {
                         damager = (Player) ((Fireball) event.getDamager()).getShooter();
                     }
+                    break;
+                }
+                case SPECTRAL_ARROW:{
+                    if(((SpectralArrow) event.getDamager()).getShooter() instanceof Player){
+                        damager = (Player) ((SpectralArrow) event.getDamager()).getShooter();
+                    }
+                    break;
+                }
+                case TRIDENT:{
+                    if(((Trident) event.getDamager()).getShooter() instanceof Player){
+                        damager = (Player) ((Trident) event.getDamager()).getShooter();
+                    }
+                    break;
                 }
             }
 
@@ -139,6 +149,9 @@ public class Listener implements org.bukkit.event.Listener {
                 damager.setLevel((int) event.getDamage() + damager.getLevel());
             }
 
+            if(player.hasPotionEffect(PotionEffectType.INVISIBILITY) && !damager.getType().equals(EntityType.FIREBALL)){
+                player.removePotionEffect(PotionEffectType.INVISIBILITY);
+            }
 
         }
     }
