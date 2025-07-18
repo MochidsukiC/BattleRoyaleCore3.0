@@ -66,7 +66,9 @@ public class GameMainController {
         }
         setGameround(1);
         List<String> strings = config.getStringList("Ring.LastCenter");
-        String[] strings1 = strings.get(new Random().nextInt(strings.size())).split(" ");
+        int r =new Random().nextInt(strings.size());
+        plugin.getLogger().info("LastCenter : " + strings.get(r));
+        String[] strings1 = strings.get(r).split(" ");
         LastRingX = Integer.parseInt(strings1[0]);
         LastRingZ = Integer.parseInt(strings1[1]);
         RingXs[0] = config.getInt("Map.Center.x");
@@ -301,7 +303,7 @@ public class GameMainController {
             }
         }
         V.setTeamCount(teams.size());
-        if(teams.size() <= 1 && !debug){
+        if(teams.size() <= 1 && !debug && getGameround()>=1){
             GameMainController.endGame();
         }
     }
